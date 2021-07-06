@@ -1,13 +1,21 @@
 package com.rookie.ecommerce.entity;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Entity
 @Table(name = "Products")
 public class Product {
+    public static ArrayList<String> PRODUCT_STATUS = new ArrayList<>(Arrays. asList("ENABLE", "DISABLE", "HIDDEN")) ;
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_seq")
+    @SequenceGenerator(name = "products_seq", sequenceName = "products_seq", allocationSize=1)
     @Column(name="id")
     private Long id;
 
@@ -21,7 +29,9 @@ public class Product {
     private Double price;
 
     @ManyToOne
-    @JoinColumn(name = "prod_cat_fk")
+    @JoinColumn(name = "categoryid")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Category category;
 
     @Column(name="createddate")

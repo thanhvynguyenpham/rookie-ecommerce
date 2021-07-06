@@ -1,12 +1,13 @@
 package com.rookie.ecommerce.service.impl;
 
 import com.rookie.ecommerce.entity.Category;
-import com.rookie.ecommerce.exception.CategoryAlreadyExistedException;
-import com.rookie.ecommerce.exception.CategoryNotExistedException;
+import com.rookie.ecommerce.exception.CategoryException.CategoryAlreadyExistedException;
+import com.rookie.ecommerce.exception.CategoryException.CategoryNotExistedException;
 import com.rookie.ecommerce.repository.CategoryRepository;
 import com.rookie.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
     }
 
+    @Transactional
     public void updateCategory(Long categoryID, String name, String description, String status) {
         Category category = categoryRepository
                 .findById(categoryID)

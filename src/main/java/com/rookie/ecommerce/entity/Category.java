@@ -1,6 +1,8 @@
 package com.rookie.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,11 +30,21 @@ public class Category {
     @Column(name = "status")
     private String status;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Product> products = new ArrayList<>();
 
     public Category() {
+    }
+
+    public Category(Long id, String name, String description, String status, List<Product> products) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.products = products;
     }
 
     public Category(Long id, String name, String description, String status) {
@@ -83,5 +95,13 @@ public class Category {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
