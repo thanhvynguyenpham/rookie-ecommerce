@@ -2,9 +2,9 @@ package com.rookie.ecommerce.service.impl;
 
 import com.rookie.ecommerce.entity.Category;
 import com.rookie.ecommerce.entity.Product;
-import com.rookie.ecommerce.exception.CategoryException.CategoryAlreadyExistedException;
 import com.rookie.ecommerce.exception.CategoryException.CategoryNotExistedException;
 import com.rookie.ecommerce.exception.ProductException.InvalidProductStatusException;
+import com.rookie.ecommerce.exception.ProductException.NoProductException;
 import com.rookie.ecommerce.exception.ProductException.ProductNotExistedException;
 import com.rookie.ecommerce.repository.CategoryRepository;
 import com.rookie.ecommerce.repository.ProductRespository;
@@ -93,6 +93,7 @@ public class ProductServiceImpl implements ProductService {
         if (status != product.getStatus()){
             product.setStatus(status);
         }
+        product.setUpdatedDate(java.time.LocalDate.now());
         productRespository.save(product);
     }
 
@@ -102,4 +103,23 @@ public class ProductServiceImpl implements ProductService {
         productRespository.deleteById(productId);
     }
 
+    public List<Product> getProductsByCategory(Long categoryID) {
+        categoryRepository.findById(categoryID).orElseThrow(() -> new CategoryNotExistedException(categoryID));
+        List<Product> products = productRespository.findByCategory_Id(categoryID);
+        if (products.isEmpty()){
+            throw new NoProductException(categoryID);
+        }
+        return products;
+    }
+
+    public List<Product> getProductsByStatus(String status) {
+        if (!Product.PRODUCT_STATUS.contains(status)){
+            throw new InvalidProductStatusException(status);
+        }
+        List<Product> products = productRespository.findByStatus(status);
+        if (products.isEmpty()){
+            throw new NoProductException(status);
+        }
+        return products;
+    }
 }

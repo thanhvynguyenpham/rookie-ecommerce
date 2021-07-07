@@ -3,6 +3,8 @@ package com.rookie.ecommerce.service.impl;
 import com.rookie.ecommerce.entity.Category;
 import com.rookie.ecommerce.exception.CategoryException.CategoryAlreadyExistedException;
 import com.rookie.ecommerce.exception.CategoryException.CategoryNotExistedException;
+import com.rookie.ecommerce.exception.CategoryException.InvalidCategoryStatusException;
+import com.rookie.ecommerce.exception.CategoryException.NoCategoryException;
 import com.rookie.ecommerce.repository.CategoryRepository;
 import com.rookie.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +72,16 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNotExistedException(categoryID);
         }
         categoryRepository.deleteById(categoryID);
+    }
+
+    public List<Category> getCategoriesByStatus(String status) {
+        if (!Category.CATEGORY_STATUS.contains(status)){
+            throw new InvalidCategoryStatusException(status);
+        }
+        List<Category> categories = categoryRepository.findByStatus(status);
+        if (categories.isEmpty()){
+            throw new NoCategoryException(status);
+        }
+        return categories;
     }
 }

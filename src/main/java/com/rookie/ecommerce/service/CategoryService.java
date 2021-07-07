@@ -16,4 +16,6 @@ public interface CategoryService {
     void updateCategory(Long categoryID, String name, String description, String status);
 
     void deleteCategory(Long categoryID);
+
+    List<Category> getCategoriesByStatus(String status);
 }

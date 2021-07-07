@@ -15,7 +15,13 @@ public class CategoryController {
 
     @GetMapping
     public List<Category> getCategories(){
+
         return categoryService.getCategories();
+    }
+
+    @GetMapping("/status/{status}")
+    public List<Category> getCategoriesByStatus(@PathVariable String status){
+        return categoryService.getCategoriesByStatus(status);
     }
 
     @GetMapping("/{categoryID}")

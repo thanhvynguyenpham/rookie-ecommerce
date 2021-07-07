@@ -20,6 +20,16 @@ public class ProductController {
         return productService.getProducts();
     }
 
+    @GetMapping("/category/{categoryID}")
+    public List<Product> getProductsByCategory(@PathVariable Long categoryID){
+        return productService.getProductsByCategory(categoryID);
+    }
+
+    @GetMapping("status/{status}")
+    public List<Product> getProductsByStatus(@PathVariable String status){
+        return productService.getProductsByStatus(status);
+    }
+
     @GetMapping("/{productId}")
     public Product getProductByID(@PathVariable Long productId){
         return productService.getProductByID(productId);

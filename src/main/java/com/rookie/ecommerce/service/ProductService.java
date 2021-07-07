@@ -20,4 +20,8 @@ public interface ProductService {
     void updateProductStatus(Long productId, String status);
 
     void deleteProduct(Long productId);
+
+    List<Product> getProductsByCategory(Long categoryID);
+
+    List<Product> getProductsByStatus(String status);
 }
