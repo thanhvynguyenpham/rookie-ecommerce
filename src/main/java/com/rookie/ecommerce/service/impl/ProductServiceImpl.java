@@ -1,33 +1,28 @@
 package com.rookie.ecommerce.service.impl;
 
+import com.rookie.ecommerce.DTO.ProductDTO;
 import com.rookie.ecommerce.entity.Category;
 import com.rookie.ecommerce.entity.Product;
 import com.rookie.ecommerce.exception.CategoryException.CategoryNotExistedException;
 import com.rookie.ecommerce.exception.ProductException.InvalidProductStatusException;
-import com.rookie.ecommerce.exception.ProductException.NoProductException;
 import com.rookie.ecommerce.exception.ProductException.ProductNotExistedException;
 import com.rookie.ecommerce.repository.CategoryRepository;
 import com.rookie.ecommerce.repository.ProductRespository;
 import com.rookie.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRespository productRespository;
-    private final CategoryRepository categoryRepository;
+    @Autowired
+    private ProductRespository productRespository;
 
     @Autowired
-    public ProductServiceImpl(ProductRespository productRespository, CategoryRepository categoryRepository) {
+    private CategoryRepository categoryRepository;
 
-        this.productRespository = productRespository;
-        this.categoryRepository = categoryRepository;
-    }
 
     public List<Product> getProducts() {
         return productRespository.findAll();
@@ -39,76 +34,20 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ProductNotExistedException(id));
     }
 
-    public void addProduct(Product product, Long categoryId) {
-        Category category = categoryRepository
-                .findById(categoryId)
-                .orElseThrow(()-> new CategoryNotExistedException(categoryId));
-        product.setCategory(category);
+    public Product addProduct(Product product) {
         product.setCreatedDate(java.time.LocalDate.now());
         product.setUpdatedDate(java.time.LocalDate.now());
         product.setStatus("ENABLE");
-        productRespository.save(product);
-    }
-
-    public void addProducts(List<Product> products, Long categoryId) {
-        products.forEach(product -> addProduct(product,categoryId));
-    }
-
-    @Transactional
-    public void updateProduct(Long productID, String name, String description, Long categoryID, String thumbnail) {
-        Product product = productRespository
-                .findById(productID)
-                .orElseThrow(()-> new ProductNotExistedException(productID));
-        if (categoryID != null){
-            Category category = categoryRepository
-                    .findById(categoryID)
-                    .orElseThrow(()-> new CategoryNotExistedException(productID));
-            product.setCategory(category);
-        }
-        if (name != null
-                && name.length() != 0
-                && !Objects.equals(name, product.getName())){
-            product.setName(name);
-        }
-        if (description != null
-                && description.length() != 0
-                && !Objects.equals(description, product.getDescription())){
-            product.setDescription(description);
-        }
-        if (thumbnail != null
-                && thumbnail.length() != 0
-                && Objects.equals(thumbnail, product.getThumbnail())){
-            product.setThumbnail(thumbnail);
-        }
-        productRespository.save(product);
-    }
-
-    public void updateProductStatus(Long productId, String status) {
-        if (!Product.PRODUCT_STATUS.contains(status)){
-            throw new InvalidProductStatusException(status);
-        }
-        Product product = productRespository
-                .findById(productId)
-                .orElseThrow(()-> new ProductNotExistedException(productId));
-        if (status != product.getStatus()){
-            product.setStatus(status);
-        }
-        product.setUpdatedDate(java.time.LocalDate.now());
-        productRespository.save(product);
+        return productRespository.save(product);
     }
 
     public void deleteProduct(Long productId) {
-        productRespository.findById(productId)
-                .orElseThrow(()->new ProductNotExistedException(productId));
         productRespository.deleteById(productId);
     }
 
     public List<Product> getProductsByCategory(Long categoryID) {
         categoryRepository.findById(categoryID).orElseThrow(() -> new CategoryNotExistedException(categoryID));
         List<Product> products = productRespository.findByCategory_Id(categoryID);
-        if (products.isEmpty()){
-            throw new NoProductException(categoryID);
-        }
         return products;
     }
 
@@ -117,9 +56,49 @@ public class ProductServiceImpl implements ProductService {
             throw new InvalidProductStatusException(status);
         }
         List<Product> products = productRespository.findByStatus(status);
-        if (products.isEmpty()){
-            throw new NoProductException(status);
-        }
         return products;
     }
+
+    public Product updateProduct(Long productID, Product product) {
+        if (!productRespository.existsById(productID)){
+            return null;
+        }
+        product.setId(productID);
+        product.setUpdatedDate(java.time.LocalDate.now());
+        return productRespository.save(product);
+    }
+
+    @Override
+    public ProductDTO convertToDTO(Product product) {
+        if (product == null){
+            return null;
+        }
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setId(product.getId());
+        productDTO.setName(product.getName());
+        productDTO.setDescription(product.getDescription());
+        productDTO.setPrice(product.getPrice());
+        productDTO.setRating(product.getRating());
+        productDTO.setThumbnail(product.getThumbnail());
+        productDTO.setCategory(product.getCategory().getName());
+        return productDTO;
+    }
+
+    @Override
+    public Product convertToEntity(ProductDTO productDTO) {
+        if(productDTO == null){
+            return null;
+        }
+        Product product = new Product();
+        product.setId(productDTO.getId());
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setThumbnail(productDTO.getThumbnail());
+        product.setPrice(productDTO.getPrice());
+        product.setRating(productDTO.getRating());
+        product.setCategory(categoryRepository.findByName(productDTO.getName()));
+        return product;
+    }
+
+
 }

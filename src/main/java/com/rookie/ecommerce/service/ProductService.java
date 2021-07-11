@@ -1,5 +1,6 @@
 package com.rookie.ecommerce.service;
 
+import com.rookie.ecommerce.DTO.ProductDTO;
 import com.rookie.ecommerce.entity.Product;
 import org.springframework.stereotype.Service;
 
@@ -11,17 +12,17 @@ public interface ProductService {
 
     Product getProductByID(Long id);
 
-    void addProduct(Product product, Long categoryId);
-
-    void addProducts(List<Product> products, Long categoryId);
-
-    void updateProduct(Long productID, String name, String description, Long categoryID, String thumbnail);
-
-    void updateProductStatus(Long productId, String status);
+    Product addProduct(Product product);
 
     void deleteProduct(Long productId);
 
     List<Product> getProductsByCategory(Long categoryID);
 
     List<Product> getProductsByStatus(String status);
+
+    Product updateProduct(Long productID, Product product);
+
+    ProductDTO convertToDTO(Product product);
+
+    Product convertToEntity(ProductDTO productDTO);
 }
