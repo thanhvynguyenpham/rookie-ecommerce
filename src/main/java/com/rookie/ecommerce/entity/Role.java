@@ -1,20 +1,24 @@
 package com.rookie.ecommerce.entity;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "roles")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
-    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private RoleName type;
+    @Enumerated(EnumType.STRING)
+    @NaturalId
+    @Column(name = "type")
+    private RoleName name;
 
-    public Role(Long id, RoleName type) {
+    public Role(Long id, RoleName name) {
         this.id = id;
-        this.type = type;
+        this.name = name;
     }
 
     public Role() {
@@ -28,11 +32,11 @@ public class Role {
         this.id = id;
     }
 
-    public RoleName getType() {
-        return type;
+    public RoleName getName() {
+        return name;
     }
 
     public void setType(RoleName type) {
-        this.type = type;
+        this.name = name;
     }
 }

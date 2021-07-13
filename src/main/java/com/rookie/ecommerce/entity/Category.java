@@ -29,22 +29,15 @@ public class Category {
     @Column(name = "status")
     private String status;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private List<Product> products = new ArrayList<>();
+//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    private List<Product> products = new ArrayList<>();
 
     public Category() {
     }
 
-    public Category(Long id, String name, String description, String status, List<Product> products) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.products = products;
-    }
 
     public Category(Long id, String name, String description, String status) {
         this.id = id;
@@ -96,11 +89,11 @@ public class Category {
         this.status = status;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+//    public List<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<Product> products) {
+//        this.products = products;
+//    }
 }

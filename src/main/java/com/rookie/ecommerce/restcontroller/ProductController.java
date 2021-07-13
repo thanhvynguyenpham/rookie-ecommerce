@@ -7,6 +7,7 @@ import com.rookie.ecommerce.exception.ProductException.ProductNotExistedExceptio
 import com.rookie.ecommerce.service.CategoryService;
 import com.rookie.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,6 +57,7 @@ public class ProductController {
     }
 
     @PostMapping("/product")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ProductDTO addProduct(@RequestBody ProductDTO productDTO){
 
         return productService.convertToDTO(productService
@@ -63,6 +65,7 @@ public class ProductController {
     }
 
     @PutMapping("/product/{productID}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ProductDTO updateProduct(
             @PathVariable Long productID,@RequestBody ProductDTO productDTO){
         Product product = productService.convertToEntity(productDTO);
@@ -74,6 +77,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/product/{productId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteProduct(@PathVariable Long productId){
 
         productService.deleteProduct(productId);

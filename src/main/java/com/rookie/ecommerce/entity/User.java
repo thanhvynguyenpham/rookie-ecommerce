@@ -8,12 +8,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "username"
+        }),
+        @UniqueConstraint(columnNames = {
+                "email"
+        })
+})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
-    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize=1)
+    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize = 1)
     private Long id;
+
+    @NotBlank
+    @Size(min = 3, max = 50)
+    private String username;
 
     @Size(min = 3, max = 50)
     private String fullname;
@@ -24,7 +35,7 @@ public class User {
     private String email;
 
     @NotBlank
-    @Size(min = 6, max = 30)
+    @Size(min = 5)
     private String password;
 
     @Size(min = 4)
@@ -44,7 +55,10 @@ public class User {
     public User() {
     }
 
-    public User(String fullname, String email, String password, String phonenum, String status, String address, Set<Role> roles) {
+    public User(Long id, String username, String fullname, String email, String password,
+                String phonenum, String status, String address, Set<Role> roles) {
+        this.id = id;
+        this.username = username;
         this.fullname = fullname;
         this.email = email;
         this.password = password;
@@ -54,15 +68,11 @@ public class User {
         this.roles = roles;
     }
 
-    public User(Long id, String fullname, String email, String password, String phonenum, String status, String address, Set<Role> roles) {
-        this.id = id;
+    public User(String username, String fullname, String email, String password) {
+        this.username = username;
         this.fullname = fullname;
         this.email = email;
         this.password = password;
-        this.phonenum = phonenum;
-        this.status = status;
-        this.address = address;
-        this.roles = roles;
     }
 
     public Long getId() {
@@ -71,6 +81,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFullname() {
@@ -127,18 +145,5 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", fullname='" + fullname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", phonenum='" + phonenum + '\'' +
-                ", status='" + status + '\'' +
-                ", address='" + address + '\'' +
-                ", roles=" + roles +
-                '}';
     }
 }
