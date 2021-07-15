@@ -1,5 +1,6 @@
 package com.rookie.ecommerce.restcontroller;
 
+import com.rookie.ecommerce.DTO.UserDTO;
 import com.rookie.ecommerce.entity.User;
 import com.rookie.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "api/users")
@@ -18,18 +20,20 @@ public class UserController {
     private UserService userService;
 
     @GetMapping()
-    public List<User> getUsers(){
-        return userService.getUsers();
+    public List<UserDTO> getUsers(){
+        return userService.getUsers().stream().map(userService::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{userid}")
-    public User getUser(@PathVariable Long userid){
-        return userService.getUser(userid);
+    public UserDTO getUser(@PathVariable Long userid){
+        return userService.convertToDTO(userService.getUser(userid));
     }
 
     @GetMapping("/email/{email}")
-    public User getUserByEmail(@PathVariable String email){
-        return userService.getUserEmail(email);
+    public UserDTO getUserByEmail(@PathVariable String email){
+
+        return userService.convertToDTO(userService.getUserEmail(email));
     }
 
 

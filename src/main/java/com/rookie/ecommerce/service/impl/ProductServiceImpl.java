@@ -4,6 +4,7 @@ import com.rookie.ecommerce.DTO.ProductDTO;
 import com.rookie.ecommerce.entity.Product;
 import com.rookie.ecommerce.exception.CategoryException.CategoryNotExistedException;
 import com.rookie.ecommerce.exception.ProductException.InvalidProductStatusException;
+import com.rookie.ecommerce.exception.ProductException.ProductNotExistedException;
 import com.rookie.ecommerce.repository.CategoryRepository;
 import com.rookie.ecommerce.repository.ProductRespository;
 import com.rookie.ecommerce.service.ProductService;
@@ -64,7 +65,13 @@ public class ProductServiceImpl implements ProductService {
         return productRespository.save(product);
     }
 
-    @Override
+    public Product updateRating(Long productID, Double rate) {
+        Product product = productRespository.findById(productID)
+                .orElseThrow(() -> new ProductNotExistedException(productID));
+        product.setRating(rate);
+        return productRespository.save(product);
+    }
+
     public ProductDTO convertToDTO(Product product) {
         if (product == null){
             return null;
@@ -80,7 +87,6 @@ public class ProductServiceImpl implements ProductService {
         return productDTO;
     }
 
-    @Override
     public Product convertToEntity(ProductDTO productDTO) {
         if(productDTO == null){
             return null;

@@ -23,6 +23,8 @@ public interface ProductService {
 
     Product updateProduct(Long productID, Product product);
 
+    Product updateRating(Long productID, Double rate);
+
     ProductDTO convertToDTO(Product product);
 
     Product convertToEntity(ProductDTO productDTO);
