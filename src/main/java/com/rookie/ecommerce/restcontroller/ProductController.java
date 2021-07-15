@@ -2,6 +2,7 @@ package com.rookie.ecommerce.restcontroller;
 
 import com.rookie.ecommerce.DTO.ProductDTO;
 import com.rookie.ecommerce.entity.Product;
+import com.rookie.ecommerce.exception.CategoryException.CategoryNotExistedException;
 import com.rookie.ecommerce.exception.ProductException.NoProductException;
 import com.rookie.ecommerce.exception.ProductException.ProductNotExistedException;
 import com.rookie.ecommerce.service.CategoryService;
@@ -53,7 +54,9 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ProductDTO getProductByID(@PathVariable Long productId){
 
-        return productService.convertToDTO(productService.getProductByID(productId));
+        return productService.convertToDTO(
+                productService.getProductByID(productId)
+                .orElseThrow(() -> new ProductNotExistedException(productId)));
     }
 
     @PostMapping("/product")

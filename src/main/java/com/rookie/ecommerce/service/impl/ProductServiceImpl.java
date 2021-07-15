@@ -1,11 +1,9 @@
 package com.rookie.ecommerce.service.impl;
 
 import com.rookie.ecommerce.DTO.ProductDTO;
-import com.rookie.ecommerce.entity.Category;
 import com.rookie.ecommerce.entity.Product;
 import com.rookie.ecommerce.exception.CategoryException.CategoryNotExistedException;
 import com.rookie.ecommerce.exception.ProductException.InvalidProductStatusException;
-import com.rookie.ecommerce.exception.ProductException.ProductNotExistedException;
 import com.rookie.ecommerce.repository.CategoryRepository;
 import com.rookie.ecommerce.repository.ProductRespository;
 import com.rookie.ecommerce.service.ProductService;
@@ -13,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,10 +27,8 @@ public class ProductServiceImpl implements ProductService {
         return productRespository.findAll();
     }
 
-    public Product getProductByID(Long id) {
-        return productRespository
-                .findById(id)
-                .orElseThrow(() -> new ProductNotExistedException(id));
+    public Optional<Product> getProductByID(Long id) {
+        return productRespository.findById(id);
     }
 
     public Product addProduct(Product product) {
@@ -46,7 +43,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public List<Product> getProductsByCategory(Long categoryID) {
-        categoryRepository.findById(categoryID).orElseThrow(() -> new CategoryNotExistedException(categoryID));
         List<Product> products = productRespository.findByCategory_Id(categoryID);
         return products;
     }
