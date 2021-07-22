@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "api/ratings")
 public class RatingController {
@@ -27,6 +28,7 @@ public class RatingController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasRole('ROLE_USER')")
     public List<Rating> getProductRatingOfUSer(@RequestParam Long productid, @RequestParam Long userid){
         return ratingService.getProductRatingOfUser(productid, userid);
     }

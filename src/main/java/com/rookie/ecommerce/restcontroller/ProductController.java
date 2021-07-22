@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "api/products")
 public class ProductController {
@@ -24,6 +25,14 @@ public class ProductController {
     @GetMapping
     public List<ProductDTO> getProducts(){
         List<Product> products = productService.getProducts();
+        return products.stream()
+                .map(productService::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/top6")
+    public List<ProductDTO> getTop6ProductsByRating(){
+        List<Product> products = productService.getTop6ProductsByRating();
         return products.stream()
                 .map(productService::convertToDTO)
                 .collect(Collectors.toList());

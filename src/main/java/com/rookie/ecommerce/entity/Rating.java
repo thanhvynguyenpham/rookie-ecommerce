@@ -47,7 +47,7 @@ public class Rating{
             this.productID = productID;
         }
     }
-    
+
     private Double rate;
 
     private String comment;

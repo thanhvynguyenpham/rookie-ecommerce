@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+    private static List<String> jwtBlackList = new ArrayList<String>();
 
     @Value("${rookies.app.jwtSecret}")
     private String jwtSecret;
@@ -58,6 +62,21 @@ public class JwtUtils {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }
 
+        return false;
+    }
+
+    public boolean addToBlackList(String jwtToken) throws Exception {
+        if (isInBlacklist(jwtSecret)){
+            return false;
+        }
+        jwtBlackList.add(jwtToken);
+        return true;
+    }
+
+    public boolean isInBlacklist(String jwtSecret) throws Exception {
+        if (jwtBlackList.contains(jwtSecret)){
+            throw new Exception("JWT Token is in blacklist");
+        }
         return false;
     }
 }

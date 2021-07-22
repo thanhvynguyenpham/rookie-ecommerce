@@ -9,6 +9,7 @@ import com.rookie.ecommerce.payload.response.JwtResponse;
 import com.rookie.ecommerce.payload.response.MessageResponse;
 import com.rookie.ecommerce.repository.RoleRepository;
 import com.rookie.ecommerce.repository.UserRepository;
+import com.rookie.ecommerce.security.jwt.JwtAuthTokenFilter;
 import com.rookie.ecommerce.security.jwt.JwtUtils;
 import com.rookie.ecommerce.security.services.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
@@ -121,5 +125,16 @@ public class AuthController {
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String jwt = JwtAuthTokenFilter.parseJwt(request);
+        if (jwt != null && jwtUtils.addToBlackList(jwt)){
+            return ResponseEntity.ok(new MessageResponse("User logged out successfully!"));
+        }
+        return ResponseEntity
+                .badRequest()
+                .body(new MessageResponse("Error: Cannot add jwt token to blacklist!"));
     }
 }

@@ -48,6 +48,10 @@ public class ProductServiceImpl implements ProductService {
         return products;
     }
 
+    public List<Product> getTop6ProductsByRating(){
+        return productRespository.findTop6ByOrderByRatingAsc();
+    }
+
     public List<Product> getProductsByStatus(String status) {
         if (!Product.PRODUCT_STATUS.contains(status)){
             throw new InvalidProductStatusException(status);
