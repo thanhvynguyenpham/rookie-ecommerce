@@ -32,6 +32,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     public Rating createRating(Rating rating) {
+        rating.setDate(java.time.LocalDate.now());
         Rating savedRating = ratingRepository.save(rating);
         if (savedRating != null){
             updateRating(rating.getId().getProductID());

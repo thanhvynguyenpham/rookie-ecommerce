@@ -11,15 +11,17 @@ public class ProductDTO {
 
     private String category;
 
-    private String thumbnail;
+    private byte[] thumbnail;
 
     private Double rating;
+
+    private String status;
 
     public ProductDTO() {
     }
 
     public ProductDTO(Long id, String name, String description, Double price,
-                      String category, String thumbnail, Double rating) {
+                      String category, byte[] thumbnail, Double rating, String status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -27,6 +29,7 @@ public class ProductDTO {
         this.category = category;
         this.thumbnail = thumbnail;
         this.rating = rating;
+        this.status = status;
     }
 
     public Long getId() {
@@ -69,11 +72,11 @@ public class ProductDTO {
         this.category = category;
     }
 
-    public String getThumbnail() {
+    public byte[] getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(String thumbnail) {
+    public void setThumbnail(byte[] thumbnail) {
         this.thumbnail = thumbnail;
     }
 
@@ -83,5 +86,13 @@ public class ProductDTO {
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

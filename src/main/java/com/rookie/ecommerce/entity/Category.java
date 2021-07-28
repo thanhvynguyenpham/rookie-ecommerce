@@ -29,11 +29,11 @@ public class Category {
     @Column(name = "status")
     private String status;
 
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    private List<Product> products = new ArrayList<>();
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Product> products = new ArrayList<>();
 
     public Category() {
     }

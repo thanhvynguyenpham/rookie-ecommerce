@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public boolean deleteCategory(Long categoryID) {
-        if (categoryRepository.existsById(categoryID)) {
+        if (!categoryRepository.existsById(categoryID)) {
             return false;
         }
         categoryRepository.deleteById(categoryID);

@@ -59,7 +59,7 @@ public class CategoryController {
     public Category updateCategory(@PathVariable Long categoryID,
                                   @RequestBody Category category) {
         Category updatedCategory = categoryService.updateCategory(categoryID, category);
-        if (updatedCategory != null){
+        if (updatedCategory == null){
             throw new CategoryNotExistedException(categoryID);
         }
         return category;

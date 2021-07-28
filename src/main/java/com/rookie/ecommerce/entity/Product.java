@@ -1,5 +1,6 @@
 package com.rookie.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "Products")
@@ -41,7 +43,7 @@ public class Product {
     private LocalDate updatedDate;
 
     @Column(name = "thumbnail")
-    private String thumbnail;
+    private byte[] thumbnail;
 
     @Column(name = "status")
     private String status;
@@ -49,10 +51,16 @@ public class Product {
     @Column(name = "rate")
     private Double rating;
 
+//    @OneToMany(mappedBy = "productid", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    private List<Product> products = new ArrayList<>();
+
     public Product() {
     }
 
-    public Product(Long id, String name, String description, Double price, Category category, LocalDate createdDate, LocalDate updatedDate, String thumbnail, String status, Double rating) {
+    public Product(Long id, String name, String description, Double price, Category category, LocalDate createdDate, LocalDate updatedDate, byte[] thumbnail, String status, Double rating) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -65,7 +73,7 @@ public class Product {
         this.rating = rating;
     }
 
-    public Product(String name, String description, Double price, Category category, String thumbnail, String status) {
+    public Product(String name, String description, Double price, Category category, byte[] thumbnail, String status) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -132,11 +140,11 @@ public class Product {
         this.updatedDate = updatedDate;
     }
 
-    public String getThumbnail() {
+    public byte[] getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(String thumbnail) {
+    public void setThumbnail(byte[] thumbnail) {
         this.thumbnail = thumbnail;
     }
 

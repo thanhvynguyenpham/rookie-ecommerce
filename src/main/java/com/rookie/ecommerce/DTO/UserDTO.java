@@ -1,5 +1,8 @@
 package com.rookie.ecommerce.DTO;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 public class UserDTO {
     private Long id;
 
@@ -16,6 +19,8 @@ public class UserDTO {
     private String status;
 
     private String address;
+
+    private Set<String> roles;
 
     public UserDTO(Long id, String username, String fullname, String email, String password,
                    String phonenum, String status, String address) {
@@ -91,6 +96,14 @@ public class UserDTO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
     }
 
     public UserDTO() {

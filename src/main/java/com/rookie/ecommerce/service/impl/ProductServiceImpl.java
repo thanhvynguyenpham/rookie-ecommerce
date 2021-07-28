@@ -88,6 +88,7 @@ public class ProductServiceImpl implements ProductService {
         productDTO.setRating(product.getRating());
         productDTO.setThumbnail(product.getThumbnail());
         productDTO.setCategory(product.getCategory().getName());
+        productDTO.setStatus(product.getStatus());
         return productDTO;
     }
 
@@ -102,7 +103,8 @@ public class ProductServiceImpl implements ProductService {
         product.setThumbnail(productDTO.getThumbnail());
         product.setPrice(productDTO.getPrice());
         product.setRating(productDTO.getRating());
-        product.setCategory(categoryRepository.findByName(productDTO.getName()));
+        product.setCategory(categoryRepository.findByName(productDTO.getCategory()));
+        product.setStatus(productDTO.getStatus());
         return product;
     }
 

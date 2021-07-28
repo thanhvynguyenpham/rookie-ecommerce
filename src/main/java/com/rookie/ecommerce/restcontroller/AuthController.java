@@ -127,7 +127,7 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public ResponseEntity<?> logoutUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String jwt = JwtAuthTokenFilter.parseJwt(request);
         if (jwt != null && jwtUtils.addToBlackList(jwt)){
