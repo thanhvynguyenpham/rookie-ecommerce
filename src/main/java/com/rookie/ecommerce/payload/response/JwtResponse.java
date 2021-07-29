@@ -9,16 +9,23 @@ public class JwtResponse {
     private String fullname;
     private String username;
     private String email;
+    private String phone;
+    private String address;
+    private String status;
     private List<String> roles;
 
-    public JwtResponse(String accessToken, Long id, String fullname, String username, String email, List<String> roles) {
+    public JwtResponse(String accessToken, Long id, String fullname, String username, String email, String phone, String address, String status, List<String> roles) {
         this.token = accessToken;
         this.id = id;
         this.username = username;
         this.fullname = fullname;
         this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.status = status;
         this.roles = roles;
     }
+
 
     public String getAccessToken() {
         return token;

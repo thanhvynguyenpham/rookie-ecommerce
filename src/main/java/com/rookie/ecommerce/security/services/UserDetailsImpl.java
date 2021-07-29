@@ -2,6 +2,7 @@ package com.rookie.ecommerce.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rookie.ecommerce.entity.User;
+import org.springframework.core.SpringVersion;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,15 +26,24 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private String phone;
+
+    private String address;
+
+    private String status;
+
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username,  String fullname, String email, String password,
+    public UserDetailsImpl(Long id, String username,  String fullname, String email, String password, String phone, String address, String status,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.fullname = fullname;
         this.email = email;
         this.password = password;
+        this.address = address;
+        this.phone = phone;
+        this.status = status;
         this.authorities = authorities;
     }
 
@@ -48,6 +58,9 @@ public class UserDetailsImpl implements UserDetails {
                 user.getFullname(),
                 user.getEmail(),
                 user.getPassword(),
+                user.getPhonenum(),
+                user.getAddress(),
+                user.getStatus(),
                 authorities);
     }
 
@@ -76,6 +89,18 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     @Override

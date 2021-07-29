@@ -71,11 +71,17 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
+        if (Objects.equals(userDetails.getStatus(),"DISABLE")){
+            return ResponseEntity.status(402).body(new MessageResponse("You have been blocked"));
+        }
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getFullname(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
+                userDetails.getPhone(),
+                userDetails.getAddress(),
+                userDetails.getStatus(),
                 roles));
     }
 
