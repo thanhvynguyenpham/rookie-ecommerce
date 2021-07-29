@@ -10,7 +10,7 @@ public interface ProductRespository extends JpaRepository<Product, Long> {
 
     List<Product> findByStatus(String status);
 
-    List<Product> findTop6ByOrderByRatingAsc();
+    List<Product> findTop6ByOrderByRatingDesc();
 
     Boolean existsByName(String name);
 }

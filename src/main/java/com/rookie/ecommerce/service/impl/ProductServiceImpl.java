@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public List<Product> getTop6ProductsByRating(){
-        return productRespository.findTop6ByOrderByRatingAsc();
+        return productRespository.findTop6ByOrderByRatingDesc();
     }
 
     public List<Product> getProductsByStatus(String status) {
