@@ -25,12 +25,32 @@ public class SignupRequest {
     @Size(min = 5, max = 40)
     private String password;
 
+    private String phone;
+
+    private String address;
+
     public SignupRequest(String fullname, String username, String email, Set<String> roles, String password) {
         this.fullname = fullname;
         this.username = username;
         this.email = email;
         this.roles = roles;
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public SignupRequest() {

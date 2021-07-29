@@ -5,6 +5,7 @@ import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -78,5 +79,21 @@ public class JwtUtils {
             throw new Exception("JWT Token is in blacklist");
         }
         return false;
+    }
+
+    public Boolean isExpire(String jwt){
+        Date expiration = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().getExpiration();
+        Date now = new Date();
+        if(expiration.before(now))
+            return true;
+        return false;
+    }
+
+    @Scheduled(cron="0 0 1 * *")
+    public void deleteExpireToken(){
+        for (String jwt : jwtBlackList) {
+            if(isExpire(jwt))
+                jwtBlackList.remove(jwt);
+        }
     }
 }

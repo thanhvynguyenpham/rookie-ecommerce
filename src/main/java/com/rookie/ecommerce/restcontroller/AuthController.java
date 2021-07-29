@@ -98,6 +98,14 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
+        if (signUpRequest.getPhone() != null){
+            user.setPhonenum(signUpRequest.getPhone());
+        }
+
+        if (signUpRequest.getAddress() != null){
+            user.setAddress(signUpRequest.getAddress());
+        }
+
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
@@ -107,7 +115,7 @@ public class AuthController {
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
-                    if (Objects.equals(role.toLowerCase(),"admin")) {
+                    if (Objects.equals(role.toLowerCase(),"role_admin")) {
                         Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);

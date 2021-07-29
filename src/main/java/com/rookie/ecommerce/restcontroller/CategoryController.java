@@ -4,8 +4,6 @@ import com.rookie.ecommerce.entity.Category;
 import com.rookie.ecommerce.entity.Product;
 import com.rookie.ecommerce.exception.CategoryException.CategoryAlreadyExistedException;
 import com.rookie.ecommerce.exception.CategoryException.CategoryNotExistedException;
-import com.rookie.ecommerce.exception.CategoryException.InvalidCategoryStatusException;
-import com.rookie.ecommerce.exception.CategoryException.NoCategoryException;
 import com.rookie.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,17 +24,7 @@ public class CategoryController {
         return categoryService.getCategories();
     }
 
-    @GetMapping("/status/{status}")
-    public List<Category> getCategoriesByStatus(@PathVariable String status){
-        if (!Category.CATEGORY_STATUS.contains(status)){
-            throw new InvalidCategoryStatusException(status);
-        }
-        List<Category> categories = categoryService.getCategoriesByStatus(status);
-        if (categories.isEmpty()){
-            throw new NoCategoryException(status);
-        }
-        return categories;
-    }
+
 
     @GetMapping("/{categoryID}")
     public Category getCategoryByID(@PathVariable Long categoryID){

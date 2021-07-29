@@ -33,6 +33,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public Product addProduct(Product product) {
+        if (productRespository.existsByName(product.getName())){
+            return null;
+        }
         product.setCreatedDate(java.time.LocalDate.now());
         product.setUpdatedDate(java.time.LocalDate.now());
         product.setStatus("ENABLE");

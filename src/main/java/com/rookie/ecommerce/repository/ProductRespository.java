@@ -11,4 +11,6 @@ public interface ProductRespository extends JpaRepository<Product, Long> {
     List<Product> findByStatus(String status);
 
     List<Product> findTop6ByOrderByRatingAsc();
+
+    Boolean existsByName(String name);
 }

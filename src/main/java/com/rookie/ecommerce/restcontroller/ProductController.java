@@ -4,6 +4,7 @@ import com.rookie.ecommerce.DTO.ProductDTO;
 import com.rookie.ecommerce.entity.Product;
 import com.rookie.ecommerce.exception.CategoryException.CategoryNotExistedException;
 import com.rookie.ecommerce.exception.ProductException.NoProductException;
+import com.rookie.ecommerce.exception.ProductException.ProductAlreadyExistedException;
 import com.rookie.ecommerce.exception.ProductException.ProductNotExistedException;
 import com.rookie.ecommerce.service.CategoryService;
 import com.rookie.ecommerce.service.ProductService;
@@ -71,9 +72,11 @@ public class ProductController {
     @PostMapping("/product")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ProductDTO addProduct(@RequestBody ProductDTO productDTO){
-
-        return productService.convertToDTO(productService
-                        .addProduct(productService.convertToEntity(productDTO)));
+        Product product= productService.addProduct(productService.convertToEntity(productDTO));
+        if (product == null){
+            throw new ProductAlreadyExistedException(productDTO.getName());
+        }
+        return productService.convertToDTO(product);
     }
 
     @PutMapping("/product/{productID}")

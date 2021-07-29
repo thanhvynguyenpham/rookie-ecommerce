@@ -16,7 +16,5 @@ public interface CategoryService {
 
     boolean deleteCategory(Long categoryID);
 
-    List<Category> getCategoriesByStatus(String status);
-
     Category updateCategory(Long categoryID, Category category);
 }

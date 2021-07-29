@@ -1,16 +1,11 @@
 package com.rookie.ecommerce.service.impl;
 
 import com.rookie.ecommerce.entity.Category;
-import com.rookie.ecommerce.exception.CategoryException.CategoryNotExistedException;
-import com.rookie.ecommerce.exception.CategoryException.InvalidCategoryStatusException;
-import com.rookie.ecommerce.exception.CategoryException.NoCategoryException;
 import com.rookie.ecommerce.repository.CategoryRepository;
 import com.rookie.ecommerce.service.CategoryService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -37,7 +32,6 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryOptional.isPresent()) {
             return false;
         }
-        category.setStatus("ENABLE");
         categoryRepository.save(category);
         return true;
     }
@@ -50,10 +44,6 @@ public class CategoryServiceImpl implements CategoryService {
         return true;
     }
 
-    public List<Category> getCategoriesByStatus(String status) {
-        return categoryRepository.findByStatus(status);
-    }
-
     public Category updateCategory(Long categoryID, Category category) {
         if (!categoryRepository.existsById(categoryID)){
             return null;
@@ -62,8 +52,4 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
         return category;
     }
-
-//    public boolean updateCategory(Category category) {
-//        categoryRepository.save()
-//    }
 }

@@ -12,8 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "categories")
 public class Category {
-    public static ArrayList<String> CATEGORY_STATUS = new ArrayList<>(Arrays. asList("ENABLE", "DISABLE", "HIDDEN")) ;
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categories_seq")
     @SequenceGenerator(name = "categories_seq", sequenceName = "categories_seq", allocationSize=1)
@@ -25,9 +24,6 @@ public class Category {
 
     @Column(name = "description")
     private String description;
-
-    @Column(name = "status")
-    private String status;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -43,13 +39,6 @@ public class Category {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.status = status;
-    }
-
-    public Category(String name, String description, String status) {
-        this.name = name;
-        this.description = description;
-        this.status = status;
     }
 
     public Category(String name, String description) {
@@ -80,20 +69,4 @@ public class Category {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-//    public List<Product> getProducts() {
-//        return products;
-//    }
-//
-//    public void setProducts(List<Product> products) {
-//        this.products = products;
-//    }
 }
